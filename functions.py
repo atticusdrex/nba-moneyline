@@ -22,17 +22,6 @@ def get_games(start_date = '10/01/1994'):
         games_df = pd.concat((games_df, games))
 
     return games_df
-
-def prob_plot(Y_true, Y_pred, bins=10):
-    successes = np.zeros((bins))
-    totals = np.zeros_like(successes)
-    bounds = zip(np.linspace(0, 1, bins + 1)[0:-1], np.linspace(0,1,bins+1)[1:])
-    print(bounds)
-
-    for (lower, upper) in bounds:
-        print(lower)
-        print(upper)
-        break
         
 import matplotlib.pyplot as plt
 def prob_plot(Y_true, Y_pred, bins=25):
@@ -55,6 +44,3 @@ def prob_plot(Y_true, Y_pred, bins=25):
             errors[i] = 1.0
     
     return (bound_vec, probs, samples, errors)
-
-def conversion_func(x):
-    return 0.33 - 3.24044818*x+19.26369605*x**2-41.33864052*x**3+42.70963672*x**4-17.06383276*x**5
