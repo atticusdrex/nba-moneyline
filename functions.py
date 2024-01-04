@@ -6,6 +6,8 @@ from nba_api.stats.endpoints import leaguegamefinder
 from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
+import time 
+
 
 def get_games(start_date = '10/01/1994'):
     games_df = pd.DataFrame()
@@ -15,11 +17,13 @@ def get_games(start_date = '10/01/1994'):
     for team in tqdm(nba_teams):
         team_id = team['id']
         # Query for games where the Celtics were playing
-        gamefinder = leaguegamefinder.LeagueGameFinder(date_from_nullable=start_date,team_id_nullable=team_id)
+        gamefinder = leaguegamefinder.LeagueGameFinder(date_from_nullable=start_date,team_id_nullable=team_id, timeout=60)
         # The first DataFrame of those returned is what we want.
         games = gamefinder.get_data_frames()[0]
         
         games_df = pd.concat((games_df, games))
+
+        time.sleep(1.0)
 
     return games_df
         
