@@ -1,12 +1,9 @@
-from sportsreference.nba.teams import Teams
 import pandas as pd
-from datetime import datetime
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import leaguegamefinder
 from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
-import time 
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, KFold
 from sklearn.preprocessing import StandardScaler
@@ -14,9 +11,8 @@ from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 from sklearn.metrics import accuracy_score, confusion_matrix, roc_auc_score
 from sklearn.neural_network import MLPClassifier
-from sklearn.linear_model import LogisticRegressionCV, LinearRegression
+from sklearn.linear_model import LogisticRegressionCV
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
 import seaborn as sns
 from sklearn.calibration import CalibratedClassifierCV
 
@@ -210,20 +206,30 @@ def preprocess_training(match_df, test_size=0.20, random_state = 420):
 
     return [X_train, X_test, Y_train, Y_test, list(X.columns), scaler]
 
-def train_models(X_train, Y_train):
+def train_models(X_train, Y_train, mlp=True, logit=True, knn=True, rf=True, gb = True):
+    models = []
     # Define models 
-    mlp = MLPClassifier((12), activation='logistic', tol=1e-8, max_iter=500)
-    logit = LogisticRegressionCV()
-    knn = KNeighborsClassifier(n_neighbors=150)
-    rf = RandomForestClassifier(max_depth=7, n_jobs=-1)
-    gb = GradientBoostingClassifier()
+    if mlp:
+        mlp = MLPClassifier((100, 100), activation='relu', max_iter=250, warm_start=True, alpha=5e-1, verbose=True, tol=1e-6)
+        models.append(mlp)
+    if logit:
+        logit = LogisticRegressionCV()
+        models.append(logit)
+    if knn:
+        knn = KNeighborsClassifier(n_neighbors=150)
+        models.append(knn)
+    if rf:
+        rf = RandomForestClassifier(max_depth=7, n_jobs=-1)
+        models.append(rf)
+    if gb:
+        gb = GradientBoostingClassifier()
+        models.append(gb)
 
-    # Create a list of models 
-    models = [mlp, logit, knn, rf, gb]
+
 
     # Fit each models to the training data
     for (i, model) in tqdm(enumerate(models)):
-        model = CalibratedClassifierCV(model, method = "isotonic")
+        #model = CalibratedClassifierCV(model, method = "isotonic")
         model.fit(X_train, Y_train)
         models[i] = model
 
