@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     # Train models
     print("Training Models...")
-    models, weights = train_models(X_train, Y_train, mlp=True, logit=False, knn=False, rf=False, gb = False)
+    models, weights = train_models(X_train, Y_train, mlp=False, logit=True, knn=False, rf=False, gb = False)
     print("Models Trained!\n")
 
     # Creating an ensemble model
