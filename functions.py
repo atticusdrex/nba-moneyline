@@ -5,9 +5,9 @@ from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split, KFold
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, AdaBoostClassifier
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 from sklearn.metrics import accuracy_score, confusion_matrix, roc_auc_score
 from sklearn.neural_network import MLPClassifier
@@ -15,6 +15,23 @@ from sklearn.linear_model import LogisticRegressionCV
 from sklearn.neighbors import KNeighborsClassifier
 import seaborn as sns
 from sklearn.calibration import CalibratedClassifierCV
+import pytz 
+from datetime import datetime
+import requests, json
+from bs4 import BeautifulSoup
+
+def load_data(load_new_games=True, start_date='10/01/1994'):
+    print("Loading Games...")
+    if load_new_games:
+        df = get_games(start_date = start_date)        
+        df.to_csv("data/RawDF.csv", index=False)
+        df = pd.read_csv("data/RawDF.csv")
+    else:
+        df = pd.read_csv("data/RawDF.csv")
+    
+    print("Loaded Games!\n")
+
+    return df
 
 def get_games(start_date = '10/01/1994'):
     games_df = pd.DataFrame()
@@ -30,6 +47,63 @@ def get_games(start_date = '10/01/1994'):
         
         games_df = pd.concat((games_df, games))
     return games_df.reset_index(drop=True)
+
+def get_todays_odds():
+    url = "https://sportsbook.draftkings.com/leagues/basketball/nba"
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        tbody = soup.find('tbody')
+        odds_data = {}
+
+        with open("data/DraftkingsNameMatcher.json","r") as infile:
+            names_matcher = json.load(infile)
+
+        # Assuming each row is within a <tr> tag and each cell within a <td> tag
+        for (name, data) in zip(tbody.find_all('th'), tbody.find_all('tr')):
+            # Extract the text from each cell in the row and add to the row_data list
+            name = [cell.text.strip() for cell in name.find_all('div')][-1]
+            
+            name = names_matcher[name]
+            
+            moneyline_odds = [cell.text.strip() for cell in data.find_all('td')][-1]
+            odds_data[name] = moneyline_odds.replace("−","-")
+            # Seeing if it's a home game
+        
+        full_odds_data = {}
+        for (i, (team, odds)) in enumerate(odds_data.items()):
+            if (i+1)%2 == 0:
+                full_odds_data[team] = {
+                    "odds":odds,
+                    "home_team":team,
+                    "away_team":list(odds_data.keys())[i-1],
+                    "profit":odds_to_profit(odds)
+                }
+            else:
+                full_odds_data[team] = {
+                    "odds":odds,
+                    "home_team":list(odds_data.keys())[i+1],
+                    "away_team":team,
+                    "profit":odds_to_profit(odds)
+                }
+        
+        return full_odds_data
+    else:
+        raise ValueError("No Response Received from Draftkings!")
+
+
+def odds_to_profit(odds):
+    if odds[0] == "+":
+        odds = float(odds[1:])
+        return odds / 100
+    else:
+        odds = float(odds[1:])
+        return 100 / odds
+
+
+    
         
 def prob_plot(Y_true, Y_pred, bins=25):
     probs = np.zeros((bins))
@@ -210,7 +284,7 @@ def train_models(X_train, Y_train, mlp=True, logit=True, knn=True, rf=True, gb =
     models = []
     # Define models 
     if mlp:
-        mlp = MLPClassifier((100, 100), activation='relu', max_iter=250, warm_start=True, alpha=5e-1, verbose=True, tol=1e-6)
+        mlp = MLPClassifier((30, 15, 15, 15), activation='tanh',solver='sgd', max_iter=750, warm_start=True, alpha=5e-1, verbose=True, tol=1e-8)
         models.append(mlp)
     if logit:
         logit = LogisticRegressionCV()
@@ -219,7 +293,7 @@ def train_models(X_train, Y_train, mlp=True, logit=True, knn=True, rf=True, gb =
         knn = KNeighborsClassifier(n_neighbors=150)
         models.append(knn)
     if rf:
-        rf = RandomForestClassifier(max_depth=7, n_jobs=-1)
+        rf = RandomForestClassifier(max_depth=5, n_estimators=100, n_jobs=-1)
         models.append(rf)
     if gb:
         gb = GradientBoostingClassifier()
@@ -341,7 +415,7 @@ def calibration_plot(model, X_train, Y_train, X_test, Y_test):
     x_bounds = 0.5*(bounds[1:]+bounds[0:-1]).copy()
     y_probs = probs.copy()
 
-    poly = PolynomialFeatures(7)
+    poly = PolynomialFeatures(9)
     x_bounds_poly = poly.fit_transform(x_bounds.reshape(-1,1))
 
     linear_model = LinearRegression()
@@ -428,7 +502,7 @@ def get_test_df(df):
     test_df = df.groupby(['SEASON_ID', 'TEAM_ID']).apply(helper_func_test).dropna().reset_index(drop=True)
     return test_df[test_df['SEASON_ID'] == '2023'].copy()
 
-def make_prediction(home_team, away_team, test_df, scaler, model, conversion_func, linear_model, poly, ensemble=False):
+def make_prediction(home_team, away_team, test_df, scaler, model, conversion_func, linear_model, poly, home_odds, away_odds, ensemble=False):
     team1 = test_df[test_df['TEAM_ABBREVIATION'] == home_team].tail(1).copy() # Home Team
     team2 = test_df[test_df['TEAM_ABBREVIATION'] == away_team].tail(1).copy()
 
@@ -460,12 +534,28 @@ def make_prediction(home_team, away_team, test_df, scaler, model, conversion_fun
     X_test_final = final_df.drop(columns=['SEASON_ID', 'TEAM_ID', 'TEAM_ABBREVIATION', 'GAME_ID', 'GAME_DATE', 'WL']).dropna().reset_index(drop=True).apply(pd.to_numeric)
     X_test_final = scaler.transform(X_test_final)
 
-    print(away_team + " @ " + home_team)
-    if ensemble:
-        maxs, mins, means = model.predict_CI(X_test_final, axis=1)
-        print("Probability that %s wins: [%.2f - %.2f - %.2f]%%" % (home_team, 100*mins, 100 * means, 100*maxs))
-        maxs, mins, means = model.predict_CI(X_test_final, axis=0)
-        print("Probability that %s wins: [%.2f - %.2f - %.2f]%%\n" % (away_team, 100*mins, 100 * means, 100*maxs))
-    else:
-        print("Probability that %s wins: %.2f%%" % (home_team, 100 * conversion_func(model.predict_proba(X_test_final)[0][1], linear_model, poly)))
-        print("Probability that %s wins: %.2f%%\n" % (away_team, 100 * conversion_func(model.predict_proba(X_test_final)[0][0], linear_model, poly)))
+    #print(away_team + " @ " + home_team)
+
+    p1 = conversion_func(model.predict_proba(X_test_final)[0][1], linear_model, poly)
+    p2 = conversion_func(model.predict_proba(X_test_final)[0][0], linear_model, poly)
+    lb_prop = 0.05
+
+    df_dict = {
+        "Home Team":home_team,
+        "Away Team":away_team,
+        "Home Odds":int(home_odds),
+        "Away Odds":int(away_odds),
+        "Home Prob":p1,
+        "Away Prob":p2,
+        "Home LB Return":100*odds_to_profit(home_odds)*(p1-lb_prop) - 100 * (1 - p1+lb_prop),
+        "Away LB Return":100 * odds_to_profit(away_odds) * (p2-lb_prop) - 100 * (1 - p1+lb_prop)
+    }
+
+    return(pd.DataFrame(df_dict))
+
+    
+    print("Probability that %s wins: %.2f%%, Exp. Profit: %.3f%% (LB: %.3f%%)" % (home_team, 100 * p1, 100*home_odds*p1 - 100 * (1 - p1), 100*home_odds*(p1-lb_prop) - 100 * (1 - p1+lb_prop)))
+    print("Probability that %s wins: %.2f%%, Exp. Profit: %.3f%% (LB: %.3f%%)\n" % (away_team, 100 * p2, 100 * away_odds * p2 - 100 * (1 - p1), 100 * away_odds * (p2-lb_prop) - 100 * (1 - p1+lb_prop)))
+    
+    
+
