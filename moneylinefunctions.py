@@ -67,7 +67,7 @@ def get_todays_odds():
             
             moneyline_odds = [cell.text.strip() for cell in data.find_all('td')][-1]
             odds_data[name] = moneyline_odds.replace("−","-")
-            # Seeing if it's a home game
+
         
         full_odds_data = {}
         for (i, (team, odds)) in enumerate(odds_data.items()):
@@ -123,17 +123,50 @@ def prob_plot(Y_true, Y_pred, bins=25):
     
     return (bound_vec, probs, samples, errors)
 
+def filter_dataset2(df, home = True):
+    # Filtering out regular season games
+    df["SEASON"] = df["SEASON_ID"].astype(str).str[1:].astype(int)
+    df["SEASON_TYPE"] = df["SEASON_ID"].astype(str).str[0:1]
+
+    df = df.loc[df["SEASON_TYPE"] == '2',:]
+    df = df.drop(columns=["SEASON_TYPE"]).copy()
+
+    # This separates home and away games
+    if home:
+        away = df[df["MATCHUP"].str.contains("@")].copy().drop(columns = ["MATCHUP", "TEAM_NAME", "MATCHUP", "SEASON", "GAME_DATE", "PLUS_MINUS", "WL", "SEASON_ID", "TEAM_ID", "TEAM_ABBREVIATION"])
+        home = df[df["MATCHUP"].str.contains("vs")].copy().drop(columns = ["MATCHUP", "TEAM_NAME", "MATCHUP"])
+    else:
+        away = df[df["MATCHUP"].str.contains("vs")].copy().drop(columns = ["MATCHUP", "TEAM_NAME", "MATCHUP", "SEASON", "GAME_DATE", "PLUS_MINUS", "WL", "SEASON_ID", "TEAM_ID", "TEAM_ABBREVIATION"])
+        home = df[df["MATCHUP"].str.contains("@")].copy().drop(columns = ["MATCHUP", "TEAM_NAME", "MATCHUP"])
+    
+    df['Home'] = df.loc[df["MATCHUP"].str.contains("@"), 'MATCHUP'].copy()
+    df.loc[df['Home'].isna(), 'Home'] = 1 
+    df.loc[df['Home'] != 1, 'Home'] = 0 
+
+    away_cols = list(away.columns)
+    away_cols = [col + "_opp" for col in away_cols]
+    away.columns = away_cols
+
+    home_df = pd.merge(home, away, left_on = "GAME_ID", right_on = "GAME_ID_opp")
+    home_df.loc[home_df["WL"] != "W", "WL"] = 0
+    home_df.loc[home_df["WL"] == "W", "WL"] = 1
+
+    return home_df
 
 def filter_dataset(df):
+    # Filtering out regular season games
+    df["SEASON"] = df["SEASON_ID"].astype(str).str[1:].astype(int)
+    df["SEASON_TYPE"] = df["SEASON_ID"].astype(str).str[0:1]
+
+    df = df.loc[df["SEASON_TYPE"] == '2',:]
+    df = df.drop(columns=["SEASON_TYPE"]).copy()
+
     # Creating a column to indicate if the home team is playing
     df['Home'] = 1
     # Creating a list of indices to include 
     inds_to_include = []
     # Iterating through the rows
-    for (index, row) in tqdm(df.iterrows()):
-        # Getting rid of the first character on the SEASON_ID
-        row.SEASON_ID = str(row.SEASON_ID)[1:]
-        df.loc[index, 'SEASON_ID'] = row.SEASON_ID
+    for (index, row) in tqdm(df.iterrows(), total = len(df)):
         # Setting home games
         if '@' in row.MATCHUP:
             df.loc[index, 'Home'] = 0
@@ -144,18 +177,8 @@ def filter_dataset(df):
         else:
             df.loc[index, 'WL'] = 0
 
-        # Only including the in-season months
-        month = int(row.GAME_DATE.split('-')[1])
-        day = int(row.GAME_DATE.split('-')[2])
-        if month < 7 or month > 9:
-            if month == 10 and day > 20:
-                inds_to_include.append(index)
-            elif month > 10 or month < 7:
-                inds_to_include.append(index)
-
     # Dropping necessary columns and resetting indices
-    df = df.loc[inds_to_include, :]
-    df.drop(columns = ['TEAM_NAME', 'MATCHUP'], inplace=True)
+    df.drop(columns = ['TEAM_NAME', 'MATCHUP', 'SEASON_ID'], inplace=True)
     df.reset_index(drop=True, inplace=True)
     return df
 
@@ -216,8 +239,45 @@ def groupby_team_season(df):
         return group
 
     # Sort by unique SEASON_ID and TEAM_ID, apply the helper_func(), drop all the NA's and reset the indices
-    running_totals = df.groupby(['SEASON_ID', 'TEAM_ID']).apply(helper_func).dropna().reset_index(drop=True)
+    running_totals = df.groupby(['SEASON', 'TEAM_ID']).apply(helper_func).dropna().reset_index(drop=True)
     return running_totals
+
+def groupby_team_season2(df):
+    def helper_func(group):
+        game_id = group["GAME_ID"]
+        # Isolate the quantitative columns 
+        cols = list(group.columns)
+        quant_cols = cols[6:]
+        # Convert the group with the quantitative columns to numeric
+        group[quant_cols] = group[quant_cols].apply(pd.to_numeric)
+        # Calculate the game count 
+        counts = group["GAME_ID"].expanding(1).count().copy().shift(1)
+        running_sum = group[quant_cols].expanding(1).sum().copy().shift(1)
+        group.drop(columns = cols[0:5], inplace = True)
+        group.reset_index(inplace=True, drop = True)
+
+        for col in quant_cols:
+            group[col] = (running_sum[col] / counts).reset_index(drop = True)
+
+        # Calculate win/loss streaks
+        streaks = calculate_streaks(group['WL'])
+        group['WStreak'], group['LStreak'] = zip(*streaks)
+        group[['WStreak', 'LStreak']] = group[['WStreak', 'LStreak']].shift(1)
+        group[['WStreak', 'LStreak']].fillna(0, inplace=True)
+
+        # Calculate Home win pct
+        group["HomeWinPCT"] = (group["WL"].apply(pd.to_numeric).expanding(1).sum().shift(1).reset_index(drop = True) / counts.reset_index(drop=True))
+
+        # Add the game id 
+        group["GAME_ID"] = list(game_id)
+
+        return group
+
+    final_df = df.groupby(by = ["SEASON_ID", "TEAM_ID"]).apply(helper_func).dropna()
+    final_df = final_df.reset_index(drop = True)
+
+    return final_df
+
 
 def match_opponents(running_totals):
     # Create a dataframe for the matchups
@@ -248,7 +308,7 @@ def match_opponents(running_totals):
 
 def match_opponents_optimized(running_totals):
     # Drop unnecessary columns just once
-    reduced_totals = running_totals.drop(columns=['SEASON_ID', 'TEAM_ABBREVIATION', 'GAME_DATE'])
+    reduced_totals = running_totals.drop(columns=['SEASON', 'TEAM_ABBREVIATION', 'GAME_DATE'])
     
     # Create two DataFrames, one for each team in a game, and shift column names for the second team
     team_1 = reduced_totals.copy()
@@ -261,6 +321,21 @@ def match_opponents_optimized(running_totals):
     match_df = merged_df[merged_df['TEAM_ID'] != merged_df['TEAM_ID_y']]
 
     return match_df
+
+def preprocess_training2(match_df, test_size = 0.20, random_state = 420):
+    X = match_df.apply(pd.to_numeric)
+    Y = X['WL'].copy()
+    X.drop(columns=['WL'], inplace=True)
+
+
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_size, random_state = random_state)
+
+    # Scale the input data
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
+
+    return [X_train, X_test, Y_train, Y_test, list(X.columns), scaler]
 
 def preprocess_training(match_df, test_size=0.20, random_state = 420):
     X = match_df.drop(columns=['TEAM_ID', 'TEAM_ID_y', 'GAME_ID', 'GAME_ID_y']).dropna().reset_index(drop=True).apply(pd.to_numeric)
@@ -390,7 +465,7 @@ def evaluate_model(model, X_train, X_test, Y_train, Y_test):
 def coefficient_plot(logit, feature_names ):
     importance_scores = logit.coef_[0]
 
-    feature_importance_df = pd.DataFrame({'Feature': feature_names, 'Importance': importance_scores}).head(30)
+    feature_importance_df = pd.DataFrame({'Feature': feature_names, 'Importance': importance_scores}).head(45)
 
     # Sort features by importance in descending order
     feature_importance_df = feature_importance_df.sort_values(by='Importance', ascending=False)
@@ -406,13 +481,13 @@ def coefficient_plot(logit, feature_names ):
 
 def calibration_plot(model, X_train, Y_train, X_test, Y_test):
     from sklearn.linear_model import LinearRegression
-    n_bins = 18
+    n_bins = 15
     (bounds, probs, samples, errors) = prob_plot(Y_train, model.predict_proba(X_train)[:,1], bins=n_bins)
 
     x_bounds = 0.5*(bounds[1:]+bounds[0:-1]).copy()
     y_probs = probs.copy()
 
-    poly = PolynomialFeatures(9)
+    poly = PolynomialFeatures(7)
     x_bounds_poly = poly.fit_transform(x_bounds.reshape(-1,1))
 
     linear_model = LinearRegression()
@@ -458,7 +533,7 @@ def calibration_plot(model, X_train, Y_train, X_test, Y_test):
 
     return [conversion_func, linear_model, poly]
 
-def get_test_df(df):
+def get_test_df(df, season_year):
     def helper_func_test(group):
         # Sort in ascending order by date
         group['GAME_DATE'] = pd.to_datetime(group['GAME_DATE'])
@@ -493,11 +568,13 @@ def get_test_df(df):
         # Remove the Count column
         group.drop(columns='Count', inplace=True)
 
+
+
         return group
 
     # Sort by unique SEASON_ID and TEAM_ID, apply the helper_func(), drop all the NA's and reset the indices
-    test_df = df.groupby(['SEASON_ID', 'TEAM_ID']).apply(helper_func_test).dropna().reset_index(drop=True)
-    return test_df[test_df['SEASON_ID'] == '2023'].copy()
+    test_df = df.groupby(['SEASON', 'TEAM_ID']).apply(helper_func_test).dropna().reset_index(drop=True)
+    return test_df[test_df['SEASON'] == season_year].copy()
 
 def make_prediction(home_team, away_team, test_df, scaler, model, conversion_func, linear_model, poly, home_odds, away_odds, ensemble=False):
     team1 = test_df[test_df['TEAM_ABBREVIATION'] == home_team].tail(1).copy() # Home Team
@@ -514,7 +591,7 @@ def make_prediction(home_team, away_team, test_df, scaler, model, conversion_fun
 
     final_df = pd.DataFrame()
     # Drop the unnecessary/redundant columns
-    team2.drop(columns=['SEASON_ID', 'TEAM_ID', 'TEAM_ABBREVIATION', 'GAME_ID', 'GAME_DATE', 'WL', 'Home'], inplace=True)
+    team2.drop(columns=['SEASON', 'TEAM_ID', 'TEAM_ABBREVIATION', 'GAME_ID', 'GAME_DATE', 'WL', 'Home'], inplace=True)
     # Reset the index
     team1.reset_index(inplace=True, drop=True)
     team2.reset_index(inplace=True, drop=True)
@@ -528,7 +605,7 @@ def make_prediction(home_team, away_team, test_df, scaler, model, conversion_fun
     # Concatenate the new dataframe with this one 
     final_df = pd.concat((final_df, team1))
 
-    X_test_final = final_df.drop(columns=['SEASON_ID', 'TEAM_ID', 'TEAM_ABBREVIATION', 'GAME_ID', 'GAME_DATE', 'WL']).dropna().reset_index(drop=True).apply(pd.to_numeric)
+    X_test_final = final_df.drop(columns=['SEASON', 'TEAM_ID', 'TEAM_ABBREVIATION', 'GAME_ID', 'GAME_DATE', 'WL']).dropna().reset_index(drop=True).apply(pd.to_numeric)
     X_test_final = scaler.transform(X_test_final)
 
     #print(away_team + " @ " + home_team)
@@ -544,6 +621,7 @@ def make_prediction(home_team, away_team, test_df, scaler, model, conversion_fun
         "Away Odds":int(away_odds),
         "Home Prob":p1,
         "Away Prob":p2,
+        
         "Home LB Return":100*odds_to_profit(home_odds)*(p1-lb_prop) - 100 * (1 - p1+lb_prop),
         "Away LB Return":100 * odds_to_profit(away_odds) * (p2-lb_prop) - 100 * (1 - p1+lb_prop)
     }

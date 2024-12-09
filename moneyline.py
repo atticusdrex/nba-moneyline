@@ -3,7 +3,7 @@ from moneylinefunctions import *
 
 if __name__ == "__main__":
     # Loading Games
-    df = load_data(load_new_games = False)
+    df = load_data(load_new_games = True)
 
     print("Processing Dataset...")
     # Preprocessing dataset
@@ -18,8 +18,8 @@ if __name__ == "__main__":
     print("Preprocessing Finished!\n")
 
     # Split into training and validation sets
-    X_train, X_test, Y_train, Y_test, feature_names, scaler = preprocess_training(match_df, test_size=2/len(match_df), random_state=420)
-    #X_train, X_test, Y_train, Y_test, feature_names, scaler = preprocess_training(match_df, test_size=0.20, random_state=70)
+    #X_train, X_test, Y_train, Y_test, feature_names, scaler = preprocess_training(match_df, test_size=2/len(match_df), random_state=420)
+    X_train, X_test, Y_train, Y_test, feature_names, scaler = preprocess_training(match_df, test_size=0.20, random_state=420)
 
     # Train models
     print("Training Models...")
@@ -36,13 +36,13 @@ if __name__ == "__main__":
     evaluate_model(model, X_train, X_test, Y_train, Y_test)
 
     # Creating a coefficient plot (optional)
-    #coefficient_plot(models[0], feature_names)
+    coefficient_plot(models[0], feature_names)
 
     # Calibration Plot
     conversion_func, linear_model, poly = calibration_plot(model, X_train, Y_train, X_test, Y_test)
 
     # Getting the test dataframe for real-time predictions
-    test_df = get_test_df(df)
+    test_df = get_test_df(df, 2024)
 
     # Get the games today and odds for them
     teams_to_test = get_todays_odds()
@@ -61,14 +61,6 @@ if __name__ == "__main__":
             away_profit = teams_to_test[away_team]["odds"]
             temp_df = make_prediction(home_team, away_team, test_df, scaler, model, conversion_func, linear_model, poly, home_profit, away_profit, ensemble = ensemble)
             results_df = pd.concat((results_df, temp_df))
-    
-    bet_size = 1.00
-    results_df["Home Bet"] = 0
-    results_df["Away Bet"] = 0
-    results_df.loc[results_df["Home LB Return"] > 15, "Home Bet"] = 1
-    results_df.loc[results_df["Away LB Return"] > 15, "Away Bet"] = 1
-    results_df["Home Bet"] = results_df["Home Bet"]*results_df["Home Prob"] * bet_size
-    results_df["Away Bet"] = results_df["Away Bet"]*results_df["Away Prob"] * bet_size
 
     print(results_df.head())
     results_df.to_excel("data/Results.xlsx", index=False)
