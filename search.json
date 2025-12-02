@@ -1,0 +1,32 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "NBA Moneyline Tool",
+    "section": "",
+    "text": "About\nGreetings, degenerates. In my free time, I adapted a project I worked on last year to display on a public website. This is a machine learning pipeline which predicts regular season NBA games. It then scrapes all the upcoming games and makes an assessment of the profitability of the bet with the odds scraped each day. This is only trained on team stats and is not aware of individual injuries/extenuating circumstances. I make no claims on the accuracy or profitability of this algorithm and this is for educational purposes only. To learn how to read the predictions, go to the Predictions tab.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "preds.html",
+    "href": "preds.html",
+    "title": "Today’s Predictions",
+    "section": "",
+    "text": "Home Team\nAway Team\nHome Odds\nAway Odds\nHome Prob\nAway Prob\nAvg. Home Profit\nAvg. Away Profit\nHome Std\nAway Std\n\n\n\n\n0\nPHI\nWAS\n-800\n550\n0.790541\n0.209582\n-16.689101\n61.824218\n45.778756\n264.556684\n\n\n1\nTOR\nPOR\n-218\n180\n0.782588\n0.217341\n6.863774\n3.380139\n60.169843\n115.482170\n\n\n2\nBOS\nNYK\n-112\n-108\n0.619931\n0.379797\n7.879807\n-12.470168\n91.879945\n93.472142\n\n\n3\nSAS\nMEM\n-205\n170\n0.751145\n0.248272\n4.316702\n3.820660\n64.325182\n116.642738\n\n\n4\nNOP\nMIN\n360\n-470\n0.216910\n0.783029\n-23.221478\n-67.712656\n189.584722\n49.988117\n\n\n5\nGSW\nOKC\n440\n-600\n0.336359\n0.662988\n54.633938\n-61.147614\n255.130239\n55.147040\n\n\n6\nORL\nMIA\n-205\n170\n0.582355\n0.417774\n-20.795903\n15.757096\n73.374215\n133.161980\n\n\n7\nTOR\nNYK\n110\n-130\n0.598436\n0.401521\n15.171489\n-18.116320\n102.945080\n86.728764\n\n\n8\nOKC\nPHX\n-950\n625\n0.809630\n0.191107\n-16.040927\n64.155051\n43.391883\n285.050711\n\n\n9\nLAL\nSAS\n-180\n150\n0.582677\n0.417449\n-17.139180\n8.385049\n76.707118\n123.284570",
+    "crumbs": [
+      "Predictions"
+    ]
+  },
+  {
+    "objectID": "preds.html#how-to-read-the-table",
+    "href": "preds.html#how-to-read-the-table",
+    "title": "Today’s Predictions",
+    "section": "How to read the table",
+    "text": "How to read the table\nThe Home Team and Away Team columns denote the three-letter abbreviation for which two teams are playing. The Home Odds and Away Odds columns denote the odds scraped from The Odds API which combines all the sportsbook odds for today. To compute the payout for a $100 bet, you can use the following formula: \\[ \\text{payout if win} = \\begin{cases} \\text{odds}, \\quad \\text{if odds $&gt;0$}  \\\\ \\frac{100^2}{|\\text{odds}|}, \\quad \\text{if odds $&lt;0$} \\end{cases} \\] The Home Prob and Away Prob columns output the model-predicted probability that the home and away teams win the game, respectively. Note that even though a probability that a team wins is high, that doesn’t necessarily make it a good bet. The Avg. Home Profit and Avg. Away Profit denote the expected payout of a $100 bet placed on the home and away team, respectively. Let \\(p\\) be the probability that a team wins the game. The expected profitability of the bet is calculated as: \\[ \\mathbb{E}(\\text{Payout}) = p \\cdot \\text{(payout if win)} - (1-p) \\cdot 100 \\]\nThe last two columns, Home Std. and Away Std. denote the standard deviation of the payout (i.e. the average deviation from the average payout). Games with win probabilities close to 50% have the highest standard deviations and, therefore, carry more uncertainty in their bets. The standard deviation for a moneyline bet is calculated with: \\[ \\sigma(\\text{Payout}) = \\left[ 100 + \\text{(payout if win)} \\right] \\sqrt{ p \\cdot (1-p)} \\]",
+    "crumbs": [
+      "Predictions"
+    ]
+  }
+]
