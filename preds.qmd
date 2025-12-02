@@ -25,3 +25,25 @@ The **Home Prob** and **Away Prob** columns output the model-predicted probabili
 $$ \mathbb{E}(\text{Payout}) = p \cdot \text{(payout if win)} - (1-p) \cdot 100 $$  
 The last two columns, **Home Std.** and **Away Std.** denote the standard deviation of the payout (i.e. the average deviation from the average payout). Games with win probabilities close to 50\% have the highest standard deviations and, therefore, carry more uncertainty in their bets. The standard deviation for a moneyline bet is calculated with: 
 $$ \sigma(\text{Payout}) = \left[ 100 + \text{(payout if win)} \right] \sqrt{ p \cdot (1-p)} $$
+
+## Overview of the Data 
+
+<p style="text-align:center; vertical-align:middle;padding-top:0%">
+    <img src="moneyline/data/contribution_plot.png" style="width:100%;text-align:left;">
+</p>
+
+This is the resulting feature importance of a logistic regression model trained on the roughly 80,000 regular season games. Each bar corresponds to how much each stat category adds (or detracts) from a team's probability of winning a given game. 
+
+## Model Calibration 
+
+The overall model's predictions are a weighted average of the individual predictions of logistic regression, neural network, K-Nearest Neighbors, and Gradient Boosting models. These models all output probabilistic estimates of how likely a given team is to win its particular game against a particular opponent. These probabilities are not 100% accurate. The following plot shows how the probabilities may not be 1:1 with how likely a team actually is to win. 
+
+<p style="text-align:center; vertical-align:middle;padding-top:0%">
+    <img src="moneyline/data/calibration_curve.png" style="width:100%;text-align:left;">
+</p>
+
+These probabilities are calibrated using a polynomial approximation which gives more accurate estimates. The following plot shows an example of how the raw probabilities (green) are corrected (red) to better explain the data. 
+
+<p style="text-align:center; vertical-align:middle;padding-top:0%">
+    <img src="moneyline/data/calibration_plot.png" style="width:100%;text-align:left;">
+</p>
