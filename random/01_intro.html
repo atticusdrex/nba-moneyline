@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Introduction – AE 4803 AIM: Course Notes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./11_ls.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">AE 4803 AIM: Course Notes</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_ls.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Linear Least Squares Problems</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00_linalg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Linear algebra review</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#whats-in-a-name-artificial-intelligence-machine-learning-data-science-and-the-scope-of-this-course." id="toc-whats-in-a-name-artificial-intelligence-machine-learning-data-science-and-the-scope-of-this-course." class="nav-link active" data-scroll-target="#whats-in-a-name-artificial-intelligence-machine-learning-data-science-and-the-scope-of-this-course."><span class="header-section-number">1.1</span> What’s in a name? Artificial intelligence, machine learning, data science, and the scope of this course.</a></li>
+  <li><a href="#regression-methods-an-overview" id="toc-regression-methods-an-overview" class="nav-link" data-scroll-target="#regression-methods-an-overview"><span class="header-section-number">1.2</span> Regression methods: an overview</a>
+  <ul class="collapse">
+  <li><a href="#motivation-and-problem-description" id="toc-motivation-and-problem-description" class="nav-link" data-scroll-target="#motivation-and-problem-description"><span class="header-section-number">1.2.1</span> Motivation and problem description</a></li>
+  <li><a href="#sec-intro-prob-form" id="toc-sec-intro-prob-form" class="nav-link" data-scroll-target="#sec-intro-prob-form"><span class="header-section-number">1.2.2</span> Mathematical setting and problem formulation</a></li>
+  </ul></li>
+  <li><a href="#a-foundation-for-learning-about-ml-beyond-parametrized-regression" id="toc-a-foundation-for-learning-about-ml-beyond-parametrized-regression" class="nav-link" data-scroll-target="#a-foundation-for-learning-about-ml-beyond-parametrized-regression"><span class="header-section-number">1.3</span> A foundation for learning about ML beyond parametrized regression</a></li>
+  <li><a href="#course-structure-and-intended-learning-outcomes" id="toc-course-structure-and-intended-learning-outcomes" class="nav-link" data-scroll-target="#course-structure-and-intended-learning-outcomes"><span class="header-section-number">1.4</span> Course structure and intended learning outcomes</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hidden">
+<!-- \renewcommand{\P}{\mathrm{P}} -->
+<!-- $$
+\DeclarePairedDelimiters{\set}{\{}{\}}
+\DeclareMathOperator*{\argmax}{argmax}
+$$
+
+\definecolor{quarto-callout-note-color}{HTML}{4477AA} -->
+</div>
+<p>Welcome to AE 4803 AIM: Foundations of Scientific Machine Learning. This is a new course offered in the Spring 2025 term at Georgia Tech and is intended to be a “foundations” level course in the new College of Engineering AI for Engineering minor.</p>
+<section id="whats-in-a-name-artificial-intelligence-machine-learning-data-science-and-the-scope-of-this-course." class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="whats-in-a-name-artificial-intelligence-machine-learning-data-science-and-the-scope-of-this-course."><span class="header-section-number">1.1</span> What’s in a name? Artificial intelligence, machine learning, data science, and the scope of this course.</h2>
+<p>I googled “artificial intelligence” (often abbreviated AI) and the first result comes from Google’s new “AI overview” feature<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>: <img src="images/01_intro_AIgoogle.png" class="img-fluid quarto-figure quarto-figure-center" style="width:100.0%" alt="Artificial intelligence (AI) is a field of study that focuses on developing machines that can learn, reason, and act in ways that are usually associated with human intelligence."></p>
+<p>Because I closed the tab with my first search and wanted to go back to the webpage to copy the text for the image alt-text above, I repeated my search, and got a somewhat different answer: <img src="images/01_intro_AIgoogle2.png" class="img-fluid quarto-figure quarto-figure-center" style="width:100.0%" alt="Artificial intelligence (AI) is the ability of a machine to perform tasks that are usually associated with human intelligence."></p>
+<p>These are probably both reasonable definitions for casual conversation, but that’s not what we’re here for. Instead, we’re here to really learn deeply about what AI is, and for that we’re going to need <strong>precision</strong> – that is, of our definitions.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Consider the two different definitions of “AI” above carefully. In what (if any) senses are they (a) exactly the same, (b) similar, (c) somewhat different, (d) very different? What consequences might these differences have (a) developing AI algorithms, (b) evaluating AI impacts, (c) creating AI policies?</p>
+</div>
+</div>
+<p>I’m not going to provide a definition of AI for now and instead I’m going to throw two more terms into the mix that you may have heard. The first is “machine learning” (often abbreviated ML). Rather than get an AI definition for this too, I decided to go to the dictionary Merriam-Webster, which provides the following primary definition <span class="citation" data-cites="merriamML2024">(<a href="#ref-merriamML2024" role="doc-biblioref">Merriam-Webster Dictionary 2024</a>)</span>:</p>
+<blockquote class="blockquote">
+<p>a computational method that is a subfield of artificial intelligence and that enables a computer to learn to perform tasks by analyzing a large dataset without being explicitly programmed</p>
+</blockquote>
+<p>And finally I’ll add the term “data science” (curiously, rarely abbreviated DS). I wanted to give you a Merriam-Webster definition here, but the term isn’t in their dictionary as of writing this on October 28, 2024. So instead I’m going to use Cambridge Dictionary’s definition <span class="citation" data-cites="cambridgeDS2024">(<a href="#ref-cambridgeDS2024" role="doc-biblioref">Cambridge Dictionary 2024</a>)</span>:</p>
+<blockquote class="blockquote">
+<p>the use of scientific methods to obtain useful information from computer data, especially large amounts of data</p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For both the terms “machine learning” and “data science”, find an alternative definition from a source that is not a generative AI. What differences exist between the new definitions you’ve found and the ones I’ve cited above?</p>
+</div>
+</div>
+<p>Clearly, different people/entities may have different ideas of what AI, ML, and data science may mean. Some people may use these terms to describe generative tools like ChatGPT, GitHub copilot, and Dall-E (or similar products developed by other entities). Others use these terms to refer to more purpose-built algorithms like AlphaGo (for playing Go) or GraphCast (for weather prediction).<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Many academics use these terms to describe the study of the underlying mathematical and programming ideas on which such products are built.</p>
+<p>My goal is not to give you a single definition of any of these terms and then to argue that my definition is more correct than any other definition. The point I want to make is that it’s worth being clear about how we define these terms in any given context, whether it be in a textbook, a news article, or perhaps a spirited discussion between friends. To that end, I now want to make clear what it is that we will and will not cover in this class, which is a “foundations”-level course in the College of Engineering’s AI minor.</p>
+<p>The focus of this class will be the mathematical and programming foundations of <em>scientific machine learning</em>, which I define as <em>the study of algorithms which use scientific data to define computational tools that perform useful scientific tasks</em>. The main scientific task that we will focus on in this course is the task of <em>predictive simulation</em>, which seeks to predict the behavior or outcomes of scientific or engineering systems. Predictive simulation is a key task in engineering disciplines like design and control, where we seek to predict design outcomes and control responses in order to make decisions about design parameters and control inputs. The class of machine learning methods that we will focus on in this class will therefore be <em>regression</em> methods, which use data to define relationships between inputs and outputs that allow us to take a specified input and issue a prediction for the output.</p>
+</section>
+<section id="regression-methods-an-overview" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="regression-methods-an-overview"><span class="header-section-number">1.2</span> Regression methods: an overview</h2>
+<section id="motivation-and-problem-description" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="motivation-and-problem-description"><span class="header-section-number">1.2.1</span> Motivation and problem description</h3>
+<p>We use the notation <span class="math inline">\(z\in \mathbb{R}^d\)</span> to denote a real-valued vector of <span class="math inline">\(d\)</span> input variables, and the notation <span class="math inline">\(y \in\mathbb{R}\)</span> to denote a real-valued scalar output variable. Our goal is to be able to predict the value of <span class="math inline">\(y\)</span> if we know the value(s) of the input variable <span class="math inline">\(z\)</span>. Some examples:</p>
+<ul>
+<li>in aerodynamic modeling, <span class="math inline">\(z\)</span> could contain airfoil geometry parameters like camber and thickness, and <span class="math inline">\(y\)</span> could represent the lift coefficient. Being able to predict <span class="math inline">\(y\)</span> from <span class="math inline">\(z\)</span> enables engineers to choose more aerodynamically efficient designs.</li>
+<li>in orbital dynamics, <span class="math inline">\(z\)</span> could represent orbital parameters like altitude and inclination, and <span class="math inline">\(y\)</span> could represent the total time a satellite spends outside the sun’s shadow in a given time period. Being able to predict <span class="math inline">\(y\)</span> from <span class="math inline">\(z\)</span> enables engineers to determine if a satellite’s solar panels will generate enough power to support the satellite’s mission.</li>
+<li>in chemical process engineering, <span class="math inline">\(z\)</span> could represent conditions within a reactor like temperature and chemical mixture properties and <span class="math inline">\(y\)</span> could represent the reaction rate. Being able to predict <span class="math inline">\(y\)</span> from <span class="math inline">\(z\)</span> enables engineers to design more efficient reactors.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Propose your own example scenario where it would be useful to predict real-valued outputs from inputs, drawing on your own experience, e.g.&nbsp;in personal projects, previous coursework, work/internship/co-op experiences, or extracurriculars. What would <span class="math inline">\(z\)</span> and <span class="math inline">\(y\)</span> represent? What does predicting <span class="math inline">\(y\)</span> from <span class="math inline">\(z\)</span> enable in your scenario?</p>
+</div>
+</div>
+<p>Mathematically, predicting <span class="math inline">\(y\)</span> from <span class="math inline">\(z\)</span> amounts to defining a <em>function</em> <span class="math inline">\(f\)</span> that takes in a <span class="math inline">\(d\)</span>-dimensional input and outputs a scalar. Mathematical notational shorthand for this is <span class="math inline">\(f:\mathbb{R}^d\to\mathbb{R}\)</span>. This function <span class="math inline">\(f\)</span> is often called a <strong>model</strong>. The question at hand is: how do we choose <span class="math inline">\(f\)</span>? There are many ways to do so:</p>
+<ol type="1">
+<li><p>At a baseline, you could just make up a model: let’s just say <span class="math inline">\(y = f(z) = \|z\|^2\)</span>. This is mathematically valid, but it’s probably a bad model for the three example scenarios above, because this model probably issues predictions that are very different from the true outputs.</p></li>
+<li><p>Alternatively, you could develop a model based on physical principles (a “physics-based” model) – if you have taken classes in (aero/thermo)dynamics, then you would have learned some ways to calculate <span class="math inline">\(y\)</span> from <span class="math inline">\(z\)</span> in the above examples, e.g.&nbsp;based on potential flow theory, rigid body dynamics, or the Arrhenius equation. These models are likely to be more accurate than our made-up model above, although they are often imperfectly accurate because they make simplifying assumptions. One drawback of physics-based models is that they may be computationally expensive (some computational fluid dynamics simulations require many thousands of hours of supercomputing time). Additionally, fully physics-based models may not even exist in some applications (e.g., there are many aspects of plasma physics for which we currently lack a complete theoretical understanding).</p></li>
+<li><p>Finally, our focus will be on using <em>data</em> to define a model (a “data-driven” model or a “learned” model). We assume that we have a data set consisting of <span class="math inline">\(N\)</span> pairs of input and output data, <span class="math inline">\((z_i,y_i)\)</span> for <span class="math inline">\(i = 1,\ldots,N\)</span>. To define our model, we want to choose an <span class="math inline">\(f\)</span> so that the predicted output <span class="math inline">\(f(z_i)\)</span> is close to the output data <span class="math inline">\(y_i\)</span> for all the data in our data set. This is sometimes called “fitting” the model to data. The advantages of data-driven models are that they may be significantly cheaper than physics-based models, and they can be fit to experimental data even when we lack scientific theory for developing physics-based models. The disadvantages are that data-driven models require data – and the amount of data that would be “enough” to ensure that the learned model is accurate or useful is highly dependent on the application.</p></li>
+</ol>
+<p>Learning how to fit models to data and assess their accuracy and usefulness is the focus of this course.</p>
+</section>
+<section id="sec-intro-prob-form" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="sec-intro-prob-form"><span class="header-section-number">1.2.2</span> Mathematical setting and problem formulation</h3>
+<p>Hot take: Machine learning methods, at their core, are simply very complicated calculators.</p>
+<p>Our goal is to understand the calculations that these methods are carrying out, which is going to enable us to understand and assess both the successes and failures of the methods. This means we want to be precise about the mathematical <em>problem formulation</em>, that is, the characterization of the math problem that is being solved by the methods.</p>
+<p>Formulating a regression problem requires three ingredients:</p>
+<ol type="1">
+<li><p>Paired input and output data: let <span class="math inline">\(N\)</span> be the number of pairs, and let <span class="math inline">\(z_1,\ldots,z_N\)</span> denote the <span class="math inline">\(N\)</span> input data and <span class="math inline">\(y_1,\ldots,y_N\)</span> denote the <span class="math inline">\(N\)</span> corresponding outputs. It is common to notate the set of all these data pairs as <span class="math inline">\(\{(z_i,y_i)\}_{i=1}^N\)</span>.</p></li>
+<li><p>The definition of a parametrized <em>model class</em> – more details on this in a moment, but you should think of this as a set of possible functions that map <span class="math inline">\(z\)</span> to <span class="math inline">\(y\)</span>.</p></li>
+<li><p>A method for choosing a model from within the chosen model class – in regression problems this is most frequently done by solving an appropriate optimization problem to pick the “best” possible model from within the class.</p></li>
+</ol>
+<p>Let’s focus on the second ingredient, the parametrized model class. We use the mathematical term “class” in a similar way to the mathematical term “set”. For example, perhaps you will have heard before that the numbers <span class="math inline">\(1,2,3,\ldots\)</span> all the way to infinity form the “set of natural numbers” (often denoted <span class="math inline">\(\mathbb{N}\)</span>). As another example, <span class="math inline">\(\{H,T\}\)</span> can denote the set of possible outcomes of flipping a two-sided coin (H for heads, T for tails). Note that it is common to use curly braces <span class="math inline">\(\{\cdot\}\)</span> to enclose a set (notice where it appears in our shorthand notation for the data set!). Similarly, we can define a set of possible functions that map <span class="math inline">\(z\)</span> to <span class="math inline">\(y\)</span>, for example (assuming <span class="math inline">\(d=1\)</span> so that <span class="math inline">\(z\)</span> is a scalar for the moment):</p>
+<p><span class="math display">\[
+\mathcal{F}:= \{z^2, \sin(z), \exp(z)\}
+\]</span></p>
+<p>In the above expression, the notation <span class="math inline">\(:=\)</span> indicates that <span class="math inline">\(\mathcal{F}\)</span> is being <em>defined</em> as the expression that follows <span class="math inline">\(:=\)</span>, that is, <span class="math inline">\(\mathcal{F}\)</span> is the set of three possible functions: <span class="math inline">\(f(z)=z^2\)</span>, <span class="math inline">\(f(z)=\sin(z)\)</span>, and <span class="math inline">\(f(z)=\exp(z)\)</span>. You see that it might be cumbersome to write the “<span class="math inline">\(f(z)=\)</span>” part of every function, so that part often gets dropped.</p>
+<p>But so far I have still only been saying “set” — what distinguishes a “class” of potential models from a “set” of potential models? Usually we use the term “class” to denote a set of functions that share certain properties or functional forms, for example (still assuming <span class="math inline">\(z\)</span> is scalar for the moment) the class of all quadratic functions:</p>
+<p><span id="eq-quad-models"><span class="math display">\[
+\{c_0 + c_1 z + c_2 z^2 : c_0,c_1,c_2\in\mathbb{R}\}
+\qquad(1.1)\]</span></span></p>
+<p>The way to read this notation above is as the set of all functions of the form <span class="math inline">\(f(z) = c_0 + c_1 z + c_2 z^2\)</span> that can be obtained when <span class="math inline">\(c_0,c_1,c_2\)</span> are allowed to take on any real values.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> We call this the <em>class</em> of all quadratic functions because by varying <span class="math inline">\(c_0,c_1,c_2\)</span> we always get a quadratic function (noting that with our mathematics hats on, linear functions are just special cases of quadratic functions where the second-order coefficient is zero). Thus, functions within the class share a functional form, unlike the set <span class="math inline">\(\mathcal{F}\)</span> we defined above. However, we could use the functions in the set <span class="math inline">\(\mathcal{F}\)</span> to construct an alternative <em>model class</em>:</p>
+<p><span id="eq-sin-exp-models"><span class="math display">\[
+\{a z^2 + b\sin(z) + c\exp(z) : a,b,c\in\mathbb{R}\}
+\qquad(1.2)\]</span></span></p>
+<p>or, allowing <span class="math inline">\(z\)</span> to be a <span class="math inline">\(d\)</span>-dimensional vector again, we could consider the following model class:</p>
+<p><span id="eq-perceptron"><span class="math display">\[
+\{\max(0,a^\top (Wz + b)): W\in\mathbb{R}^{d\times d}, \,a,b\in\mathbb{R}^d\}
+\qquad(1.3)\]</span></span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>How would you read and understand the two classes of functions notated above?</p>
+</div>
+</div>
+<p>Notice that the notation we have been using to define function classes follows a pattern: within the brackets, before the colon comes the form of the function, followed by a list of some variables that appear in the function definition, together with a specification of what values those variables are allowed to take on. We call the post-colon variables <em>parameters</em>, and the set of all values that the parameters are allowed to be chosen from is called the <em>parameter space</em>. Any of the classes of functions we have defined above can be described as a <em>parametrized model class</em>, because they define sets of functions with a shared form, where the individual functions within the set arise from varying the values of the parameters.</p>
+<p>Let me describe some common notational conventions that I want you to be familiar with.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> It is common to use a single lowercase letter (usually a Greek one) to denote the set of all parameters – e.g., <span class="math inline">\(\beta = \{c_0,c_1,c_2\}\)</span> or <span class="math inline">\(\theta = \{a,b,W\}\)</span>, and the corresponding capital letter to denote the corresponding parameter space, i.e., <span class="math inline">\(B = \mathbb{R}^3\)</span> and <span class="math inline">\(\Theta = \mathbb{R}\times \mathbb{R}\times \mathbb{R}^{d\times d}\)</span>. Where we might write <span class="math inline">\(y = f(z)\)</span> for a general abstract model <span class="math inline">\(f\)</span>, we will typically write <span class="math inline">\(y = f(z;\beta)\)</span> or <span class="math inline">\(y = f(z;\theta)\)</span> to indicate a model parametrized by <span class="math inline">\(\beta\)</span> or <span class="math inline">\(\theta\)</span> (note that we separate inputs from parameters using a semicolon).</p>
+<!-- Recall that we previously used $f:z\mapsto y$ to denote a function that maps an input variable $z$ to an output variable $y$. For parametrized functions, you might see $f_\theta:z\mapsto y$ to denote a function parametrized by $\theta$ that maps $z$ to $y$, or you might see $f: z\times\theta\mapsto y$ -->
+<p>If you’ve heard the term “model architecture” used to describe a machine learning model, what this means is the specification of the parametrized model class. As the term “architecture” suggests, choosing the model class is a design choice, and different model classes have varying advantages and disadvantages in terms of best possible performance, difficulty to train (more on that shortly), computational cost, and more. We’ll cover many possible choices of model class, and explore their pros and cons, throughout the course.</p>
+<p>Now we will turn our attention to the third ingredient, the method of selecting a model from within the chosen class. Because parametrized models are defined by their parameters, the choice of model amounts to choosing the parameter values. Again, you could just make up the parameter values (choose your favorite numbers), but this is unlikely to match the data well and unlikely to yield accurate predictions. In some cases you could also derive the parameter values based on physical principles (this is possible when models in the chosen class have some physical interpretation). But our focus will be on choosing parameters that define a model that “best matches” the available data. A basic and standard version of this parameter selection task is to solve the following minimization problem:</p>
+<p><span class="math display">\[
+\theta^* = \arg\min_{\theta\in\Theta}\frac 1N \sum_{i=1}^N (f(z_i;\theta)-y_i)^2
+\]</span></p>
+<p>Note that for the above expression to be well-defined, we need our first two ingredients – that is, we need our data set, and we need to have already chosen the parametrized model class, which gives us an expression for the parametrized function <span class="math inline">\(f(z;\theta)\)</span>. Once we have those ingredients, this expression defines <span class="math inline">\(\theta^*\)</span> as the parameter that minimizes the average square error of the learned model over the available data. In this sense, this parameter <span class="math inline">\(\theta^*\)</span> defines a learned model <span class="math inline">\(f(z;\theta^*)\)</span> that “best fits” the data (it is better than all other models in its class).</p>
+<p>As we progress through this course, we will learn more about how we can solve the above optimization (it is different for different model architectures), and about alternative ways to select the parameter based on alternative minimization problems.</p>
+</section>
+</section>
+<section id="a-foundation-for-learning-about-ml-beyond-parametrized-regression" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="a-foundation-for-learning-about-ml-beyond-parametrized-regression"><span class="header-section-number">1.3</span> A foundation for learning about ML beyond parametrized regression</h2>
+<p>I want to emphasize that this class is not and indeed cannot (realistically) be an exhaustive introduction to machine learning, artificial intelligence, or data science. Even the community of professionals who describe themselves as working in “scientific machine learning” is quite broad in scope and would include folks working on topics that I do not intend to cover in this class. There are many topics within AI/ML/data science we will not cover (beyond perhaps at most a very surface level), including generative modeling, decision trees, unsupervised learning methods like clustering, and many more. The philosophy of this course is to empower you to learn about these other methods through future coursework or independent study, by providing a foundation in what I term the `three pillars of artificial intelligence’:</p>
+<ol type="1">
+<li><p>Mathematics: all machine learning methods are fundamentally solving mathematical problems at their core. The first pillar of AI is to be able to mathematically define the problem one seeks to solve.</p></li>
+<li><p>Computation: once a mathematical problem is defined, an ML method must define an algorithm that carries out the calculations to solve the problem. The second pillar of AI is to define an algorithm that (approximately) solves the mathematical problem.</p></li>
+<li><p>Human intelligence: this is the crucial third pillar of AI. Human intelligence is vital for defining mathematical problem formulations, designing algorithms, and <em>assessing</em> the results and <em>iteratively</em> updating the mathematical problem formulation and computational algorithm to achieve desired outcomes.</p></li>
+</ol>
+<p>We will seek to develop a firm foundation in these three pillars of AI throughout the course.</p>
+</section>
+<section id="course-structure-and-intended-learning-outcomes" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="course-structure-and-intended-learning-outcomes"><span class="header-section-number">1.4</span> Course structure and intended learning outcomes</h2>
+<!-- at a high level we want to teach you how to work with all three of these, and that motivates the structure of the course assignments and learning outcomes -->
+<p>learning outcomes</p>
+<p>problem solving review - meant to develop your skills in demonstrating human intelligence</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-cambridgeDS2024" class="csl-entry" role="listitem">
+Cambridge Dictionary. 2024. <span>“<span>Data Science</span>.”</span> 2024. <a href="https://dictionary.cambridge.org/dictionary/english/data-science">https://dictionary.cambridge.org/dictionary/english/data-science</a>.
+</div>
+<div id="ref-merriamML2024" class="csl-entry" role="listitem">
+Merriam-Webster Dictionary. 2024. <span>“<span>Machine Learning</span>.”</span> 2024. <a href="https://www.merriam-webster.com/dictionary/machine%20learning">https://www.merriam-webster.com/dictionary/machine%20learning</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>It seems apt to use AI to define AI, and I’m quoting it for illustrative purposes here, but I do want to point out that Google’s AI Overview is not at all transparent about how these responses are generated and thus does not meet the standards for being cited as a source in most publishing venues.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>this paragraph lists examples that came to me most quickly and thus reflects to some extent my own cognitive biases based on the media I’ve consumed. I welcome suggestions of other examples of AI/ML/data science to include that are less well-known – Email me!<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Following the same notational convention, we could write the data set as <span class="math inline">\(\{(z_i,y_i) : i =1,\ldots,N\}\)</span>, which we would read as the set of all pairs <span class="math inline">\((z_i,y_i)\)</span> for <span class="math inline">\(i = 1,\ldots,N\)</span>, but the notation <span class="math inline">\(\{(z_i,y_i)\}_{i=1}^N\)</span> is more compact and more common. I don’t make the rules. 🤷‍♀️<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>These are common conventions, but the ML community is comprised of a diverse group of scientists and engineers across disciplines, and it’s very common to read things that use entirely different notation. This is unfortunately the reality of things, and one of the reasons I am going to push you in this class to be comfortable describing the underlying concepts precisely using different notations - that is, you are going to develop flexibility in re-assigning meaning to different symbols as we go along (I hope).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>I’m making an effort to explicitly define notation when I introduce it, and to give examples of how to read and understand it, but it’s easy for me to miss things, so please speak up or write us a message if you have a question.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./11_ls.html" class="pagination-link" aria-label="Linear Least Squares Problems">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Linear Least Squares Problems</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
