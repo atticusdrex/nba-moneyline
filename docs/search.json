@@ -20,16 +20,6 @@
     ]
   },
   {
-    "objectID": "preds.html#load-csv",
-    "href": "preds.html#load-csv",
-    "title": "Today’s Predictions",
-    "section": "",
-    "text": "import pandas as pd\n\ndf = pd.read_csv(\"moneyline/data/results.csv\")\ndf\n\n\n\n\n\n\n\n\nHome Team\nAway Team\nHome Odds\nAway Odds\nHome Prob\nAway Prob\nHome LB Return\nAway LB Return\nHome Std\nAway Std\n\n\n\n\n0\nPHI\nWAS\n-800\n550\n0.790541\n0.209582\n-16.689101\n61.824218\n45.778756\n264.556684\n\n\n1\nTOR\nPOR\n-218\n180\n0.782588\n0.217341\n6.863774\n3.380139\n60.169843\n115.482170\n\n\n2\nBOS\nNYK\n-112\n-108\n0.619931\n0.379797\n7.879807\n-12.470168\n91.879945\n93.472142\n\n\n3\nSAS\nMEM\n-205\n170\n0.751145\n0.248272\n4.316702\n3.820660\n64.325182\n116.642738\n\n\n4\nNOP\nMIN\n360\n-470\n0.216910\n0.783029\n-23.221478\n-67.712656\n189.584722\n49.988117\n\n\n5\nGSW\nOKC\n440\n-600\n0.336359\n0.662988\n54.633938\n-61.147614\n255.130239\n55.147040\n\n\n6\nORL\nMIA\n-205\n170\n0.582355\n0.417774\n-20.795903\n15.757096\n73.374215\n133.161980\n\n\n7\nTOR\nNYK\n110\n-130\n0.598436\n0.401521\n15.171489\n-18.116320\n102.945080\n86.728764\n\n\n8\nOKC\nPHX\n-950\n625\n0.809630\n0.191107\n-16.040927\n64.155051\n43.391883\n285.050711\n\n\n9\nLAL\nSAS\n-180\n150\n0.582677\n0.417449\n-17.139180\n8.385049\n76.707118\n123.284570",
-    "crumbs": [
-      "Today's Games"
-    ]
-  },
-  {
     "objectID": "preds.html#how-to-read-the-table",
     "href": "preds.html#how-to-read-the-table",
     "title": "Today’s Predictions",

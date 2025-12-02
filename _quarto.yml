@@ -4,6 +4,7 @@ project:
 
 website:
   title: "Navigation"
+  site-url: https://atticusdrex.github.io/nba-moneyline/
   sidebar:
     style: "docked"
     collapse-level: 3
