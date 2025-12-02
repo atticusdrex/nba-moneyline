@@ -1,0 +1,52 @@
+name: Daily Build and Publish
+
+on:
+  schedule:
+    # Runs at 02:00 UTC every day
+    - cron: "0 2 * * *"
+  workflow_dispatch:  # allows manual runs as well
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write      # allow pushing changes back
+      pages: write         # allow publishing site
+      id-token: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # required to push changes
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Python dependencies
+        run: |
+          pip install pandas nba_api tqdm numpy matplotlib scikit-learn seaborn requests beautifulsoup4 quarto-cli
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Run your scripts
+        run: |
+          python3 -m moneyline.moneyline
+          quarto render
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --quiet && echo "No changes to commit" || git commit -m "Automated daily update"
+          git push
+
+      - name: Publish to GitHub Pages
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
