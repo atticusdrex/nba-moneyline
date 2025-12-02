@@ -3,7 +3,7 @@ name: Daily Build and Publish
 on:
   schedule:
     # Runs at 02:00 UTC every day
-    - cron: "0 2 * * *"
+    - cron: "0 21 * * *"
   workflow_dispatch:  # allows manual runs as well
 
 jobs:
