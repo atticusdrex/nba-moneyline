@@ -1,0 +1,27 @@
+---
+title: "Today's Predictions"
+number-sections: false
+format: html
+jupyter: python3
+---
+
+```{python}
+#| echo: false
+#| warning: false
+
+import pandas as pd
+
+df = pd.read_csv("moneyline/data/results.csv")
+df
+```
+
+---
+
+## How to read the table 
+
+The **Home Team** and **Away Team** columns denote the three-letter abbreviation for which two teams are playing. The **Home Odds** and **Away Odds** columns denote the odds scraped from The Odds API which combines all the sportsbook odds for today. To compute the payout for a \$100 bet, you can use the following formula: 
+$$ \text{payout if win} = \begin{cases} \text{odds}, \quad \text{if odds $>0$}  \\ \frac{100^2}{|\text{odds}|}, \quad \text{if odds $<0$} \end{cases} $$
+The **Home Prob** and **Away Prob** columns output the model-predicted probability that the home and away teams win the game, respectively. Note that even though a probability that a team wins is high, that doesn't necessarily make it a good bet. The **Avg. Home Profit** and **Avg. Away Profit** denote the expected payout of a \$100 bet placed on the home and away team, respectively. Let $p$ be the probability that a team wins the game. The expected profitability of the bet is calculated as: 
+$$ \mathbb{E}(\text{Payout}) = p \cdot \text{(payout if win)} - (1-p) \cdot 100 $$  
+The last two columns, **Home Std.** and **Away Std.** denote the standard deviation of the payout (i.e. the average deviation from the average payout). Games with win probabilities close to 50\% have the highest standard deviations and, therefore, carry more uncertainty in their bets. The standard deviation for a moneyline bet is calculated with: 
+$$ \sigma(\text{Payout}) = \left[ 100 + \text{(payout if win)} \right] \sqrt{ p \cdot (1-p)} $$

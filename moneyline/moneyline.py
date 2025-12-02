@@ -1,4 +1,4 @@
-from util import *
+from .util import *
 
 # FOR A DRY RUN FOR WAGERING: 
 # Load new games -> True 
@@ -39,10 +39,10 @@ if __name__ == "__main__":
     evaluate_model(model, X_train, X_test, Y_train, Y_test)
 
     # Creating a coefficient plot (optional)
-    coefficient_plot(models[0], feature_names)
+    # coefficient_plot(models[0], feature_names)
 
     # Calibration Plot
-    conversion_func, linear_model, poly = calibration_plot(model, X_train, Y_train, X_test, Y_test)
+    conversion_func, linear_model, poly = calibration_plot(model, X_train, Y_train, X_test, Y_test, plot = False)
 
     # Getting the test dataframe for real-time predictions
     test_df = get_test_df(df, 2025)
@@ -69,4 +69,4 @@ if __name__ == "__main__":
             
 
     print(results_df.head())
-    results_df.to_excel("data/Results.xlsx", index=False)
+    results_df.to_csv("moneyline/data/results.csv", index=False)

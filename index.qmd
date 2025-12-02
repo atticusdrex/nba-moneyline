@@ -1,0 +1,26 @@
+---
+title: "NBA Moneyline Tool"
+author: "Atticus Rex"
+date: "December 1, 2025"
+about:
+  template: trestles
+  image: images/green-fn.jpg
+  links:
+    - icon: people
+      text: Personal Site
+      href: https://atticusdrex.github.io/website
+      target: "_blank"
+    - icon: github
+      text: Github
+      href: https://github.com/atticusdrex
+      target: "_blank"
+    - icon: envelope
+      text: Email 
+      href: mailto:arex8@gatech.edu
+      target: "_blank"
+
+number-sections: false
+---
+
+# About
+Greetings, degenerates. In my free time, I adapted a project I worked on last year to display on a public website. This is a machine learning pipeline which predicts regular season NBA games. It then scrapes all the upcoming games and makes an assessment of the profitability of the bet with the odds scraped each day. This is only trained on team stats and is not aware of individual injuries/extenuating circumstances. I make no claims on the *accuracy* or *profitability* of this algorithm and this is for *educational* purposes only. To learn how to read the predictions, go to the **Predictions** tab. 

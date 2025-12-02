@@ -1,0 +1,27 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Navigation"
+  sidebar:
+    style: "docked"
+    collapse-level: 3
+    search: false
+    contents:
+      - text: "Home"
+        href: index.qmd
+        target: _blank
+      - text: "Predictions"
+        href: preds.qmd 
+
+
+number-sections: true
+
+execute:
+  freeze: auto
+
+format:
+  html:
+    theme: lumen
+    css: css/custom.css

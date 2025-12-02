@@ -16,15 +16,16 @@ from sklearn.neighbors import KNeighborsClassifier
 import seaborn as sns
 import requests, json
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 def load_data(load_new_games=True, start_date='10/01/1994'):
     print("Loading Games...")
     if load_new_games:
         df = get_games(start_date = start_date)        
-        df.to_csv("data/RawDF.csv", index=False)
-        df = pd.read_csv("data/RawDF.csv")
+        df.to_csv("moneyline/data/RawDF.csv", index=False)
+        df = pd.read_csv("moneyline/data/RawDF.csv")
     else:
-        df = pd.read_csv("data/RawDF.csv")
+        df = pd.read_csv("moneyline/data/RawDF.csv")
     
     print("Loaded Games!\n")
 
@@ -77,7 +78,7 @@ def get_todays_odds():
 
         # Try to load a DraftKings name -> abbreviation mapping if available
         try:
-            with open('data/DraftkingsNameMatcher.json', 'r') as f:
+            with open('moneyline/data/DraftkingsNameMatcher.json', 'r') as f:
                 name_map = json.load(f)
         except Exception:
             name_map = {}
@@ -609,7 +610,7 @@ def coefficient_plot(logit, feature_names ):
     plt.show()
 
 
-def calibration_plot(model, X_train, Y_train, X_test, Y_test):
+def calibration_plot(model, X_train, Y_train, X_test, Y_test, plot = False):
     from sklearn.linear_model import LinearRegression
     n_bins = 15
     (bounds, probs, samples, errors) = prob_plot(Y_train, model.predict_proba(X_train)[:,1], bins=n_bins)
@@ -631,35 +632,36 @@ def calibration_plot(model, X_train, Y_train, X_test, Y_test):
     x_test_poly = poly.transform(x_test.reshape(-1,1))
     y_test = linear_model.predict(x_test_poly)
 
-    plt.figure(figsize=(10,5))
-    plt.scatter(x_bounds, y_probs, label = "Raw Probabilities")
-    plt.plot(x_test, y_test, label = "Polynomial Approximation")
-    plt.scatter(0.5*(bounds[1:]+bounds[0:-1]), samples / np.max(samples), label = "Sample Size Proportions")
-    plt.errorbar(0.5*(bounds[1:]+bounds[0:-1]), probs, yerr=errors, ecolor='black', capsize=3)
-    plt.plot([0,1], [0,1], label = "Ideal Relationship")
-    plt.grid()
-    plt.legend()
-    plt.xlabel("Probability Predicted Won")
-    plt.ylabel("Actual Probability Won")
-    plt.title("Calibration Curve with 98.75% Confidence Intervals")
+    if plot:
+        plt.figure(figsize=(10,5))
+        plt.scatter(x_bounds, y_probs, label = "Raw Probabilities")
+        plt.plot(x_test, y_test, label = "Polynomial Approximation")
+        plt.scatter(0.5*(bounds[1:]+bounds[0:-1]), samples / np.max(samples), label = "Sample Size Proportions")
+        plt.errorbar(0.5*(bounds[1:]+bounds[0:-1]), probs, yerr=errors, ecolor='black', capsize=3)
+        plt.plot([0,1], [0,1], label = "Ideal Relationship")
+        plt.grid()
+        plt.legend()
+        plt.xlabel("Probability Predicted Won")
+        plt.ylabel("Actual Probability Won")
+        plt.title("Calibration Curve with 98.75% Confidence Intervals")
 
-    plt.show()
+        plt.show()
 
-    plt.figure(figsize=(10,5))
-    (bounds, probs, samples, errors) = prob_plot(Y_test, conversion_func(model.predict_proba(X_test)[:,1], linear_model, poly), bins=n_bins)
-    plt.scatter(x_bounds, probs, c='red', label = "Corrected Points")
-    plt.errorbar(x_bounds, probs, yerr=errors, ecolor='black', capsize=3)
-    (bounds, probs, samples, errors) = prob_plot(Y_test, model.predict_proba(X_test)[:,1], bins=n_bins)
-    plt.scatter(x_bounds, probs, c='green', label="Uncorrected Points")
-    plt.errorbar(x_bounds, probs, yerr=errors, ecolor='blue', capsize=3)
-    plt.plot([0,1], [0,1])
-    plt.grid()
-    plt.xlabel("Probability Predicted Won")
-    plt.ylabel("Actual Probability Won")
-    plt.title("Calibration Curve with Calibrated Probabilities (98.75 Confidence Intervals)")
-    plt.legend()
+        plt.figure(figsize=(10,5))
+        (bounds, probs, samples, errors) = prob_plot(Y_test, conversion_func(model.predict_proba(X_test)[:,1], linear_model, poly), bins=n_bins)
+        plt.scatter(x_bounds, probs, c='red', label = "Corrected Points")
+        plt.errorbar(x_bounds, probs, yerr=errors, ecolor='black', capsize=3)
+        (bounds, probs, samples, errors) = prob_plot(Y_test, model.predict_proba(X_test)[:,1], bins=n_bins)
+        plt.scatter(x_bounds, probs, c='green', label="Uncorrected Points")
+        plt.errorbar(x_bounds, probs, yerr=errors, ecolor='blue', capsize=3)
+        plt.plot([0,1], [0,1])
+        plt.grid()
+        plt.xlabel("Probability Predicted Won")
+        plt.ylabel("Actual Probability Won")
+        plt.title("Calibration Curve with Calibrated Probabilities (98.75 Confidence Intervals)")
+        plt.legend()
 
-    plt.show()
+        plt.show()
 
     return [conversion_func, linear_model, poly]
 
@@ -746,8 +748,8 @@ def make_prediction(home_team, away_team, test_df, scaler, model, conversion_fun
             "Away Odds": int(away_odds) if away_odds is not None else None,
             "Home Prob": np.nan,
             "Away Prob": np.nan,
-            "Home LB Return": np.nan,
-            "Away LB Return": np.nan,
+            "Avg. Home Profit": np.nan,
+            "Avg. Away Profit": np.nan,
             "Home Std": np.nan,
             "Away Std": np.nan,
         }
@@ -771,17 +773,13 @@ def make_prediction(home_team, away_team, test_df, scaler, model, conversion_fun
         "Home Prob":p1,
         "Away Prob":p2,
         
-        "Home LB Return":100*odds_to_profit(home_odds)*(p1-lb_prop) - 100 * (1 - p1+lb_prop),
-        "Away LB Return":100 * odds_to_profit(away_odds) * (p2-lb_prop) - 100 * (1 - p1+lb_prop),
+        "Avg. Home Profit":100*odds_to_profit(home_odds)*(p1-lb_prop) - 100 * (1 - p1+lb_prop),
+        "Avg. Away Profit":100 * odds_to_profit(away_odds) * (p2-lb_prop) - 100 * (1 - p1+lb_prop),
         "Home Std": np.sqrt(100**2 * (odds_to_profit(home_odds)+1)**2 * p1*(1-p1)),
         "Away Std": np.sqrt(100**2 * (odds_to_profit(away_odds)+1)**2 * p2*(1-p2)),
     }
 
     return(pd.DataFrame(df_dict))
-
-    
-    print("Probability that %s wins: %.2f%%, Exp. Profit: %.3f%% (LB: %.3f%%)" % (home_team, 100 * p1, 100*home_odds*p1 - 100 * (1 - p1), 100*home_odds*(p1-lb_prop) - 100 * (1 - p1+lb_prop)))
-    print("Probability that %s wins: %.2f%%, Exp. Profit: %.3f%% (LB: %.3f%%)\n" % (away_team, 100 * p2, 100 * away_odds * p2 - 100 * (1 - p1), 100 * away_odds * (p2-lb_prop) - 100 * (1 - p1+lb_prop)))
     
     
 
