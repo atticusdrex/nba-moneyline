@@ -6,7 +6,7 @@ from .util import *
 
 if __name__ == "__main__":
     # Loading Games
-    df = load_data(load_new_games = False)
+    df = load_data(load_new_games = True)
 
     print("Processing Dataset...")
     # Preprocessing dataset
