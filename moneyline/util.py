@@ -43,7 +43,7 @@ def get_games(start_date = '10/01/1994'):
         # Isolate the team ID 
         team_id = team['id']
         # Query for games when this team played from the start_date 
-        gamefinder = leaguegamefinder.LeagueGameFinder(date_from_nullable=start_date,team_id_nullable=team_id, timeout=60)
+        gamefinder = leaguegamefinder.LeagueGameFinder(date_from_nullable=start_date,team_id_nullable=team_id, timeout=120)
         # The first DataFrame of those returned is what we want.
         games = gamefinder.get_data_frames()[0]
         
