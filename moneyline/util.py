@@ -602,12 +602,12 @@ def coefficient_plot(logit, feature_names ):
     feature_importance_df = feature_importance_df.sort_values(by='Importance', ascending=False)
 
     # Create a bar plot
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 8), dpi = 200)
     sns.barplot(x='Importance', y='Feature', data=feature_importance_df)
     plt.xlabel('Feature Coefficient')
     plt.ylabel('Features')
     plt.title('Stat Contribution to Probability of Team Winning')
-    plt.show()
+    plt.savefig("moneyline/data/contribution_plot.png")
 
 
 def calibration_plot(model, X_train, Y_train, X_test, Y_test, plot = False):
@@ -645,9 +645,9 @@ def calibration_plot(model, X_train, Y_train, X_test, Y_test, plot = False):
         plt.ylabel("Actual Probability Won")
         plt.title("Calibration Curve with 98.75% Confidence Intervals")
 
-        plt.show()
+        plt.savefig("moneyline/data/calibration_curve.png")
 
-        plt.figure(figsize=(10,5))
+        plt.figure(figsize=(10,5), dpi = 200)
         (bounds, probs, samples, errors) = prob_plot(Y_test, conversion_func(model.predict_proba(X_test)[:,1], linear_model, poly), bins=n_bins)
         plt.scatter(x_bounds, probs, c='red', label = "Corrected Points")
         plt.errorbar(x_bounds, probs, yerr=errors, ecolor='black', capsize=3)
@@ -661,7 +661,7 @@ def calibration_plot(model, X_train, Y_train, X_test, Y_test, plot = False):
         plt.title("Calibration Curve with Calibrated Probabilities (98.75 Confidence Intervals)")
         plt.legend()
 
-        plt.show()
+        plt.savefig("moneyline/data/calibration_plot.png")
 
     return [conversion_func, linear_model, poly]
 
