@@ -25,4 +25,3 @@ execute:
 format:
   html:
     theme: lumen
-    css: css/custom.css
