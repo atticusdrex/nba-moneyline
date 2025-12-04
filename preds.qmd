@@ -1,8 +1,10 @@
 ---
 title: "Today's Predictions"
-number-sections: false
 format: html
 jupyter: python3
+execute:
+  echo: false
+  warning: false
 ---
 
 ```{python}
