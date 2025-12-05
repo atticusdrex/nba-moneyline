@@ -5,6 +5,7 @@ jupyter: python3
 execute:
   echo: false
   warning: false
+  cache: false
 ---
 
 ```{python}
