@@ -2,6 +2,7 @@
 title: "Today's Predictions"
 format: html
 jupyter: python3
+number-sections: false
 execute:
   echo: false
   warning: false
