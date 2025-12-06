@@ -7,14 +7,15 @@ execute:
   echo: false
   warning: false
   cache: false
+  depends: ["moneyline/data/results.csv"]
 ---
 
 ```{python}
-#| echo: false
-#| warning: false
-#| depends: ["moneyline/data/results.csv"]
-
 import pandas as pd
+from datetime import datetime 
+
+print("Last Updated: ")
+print(datetime.now())
 
 df = pd.read_csv("moneyline/data/results.csv")
 df
