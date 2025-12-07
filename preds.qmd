@@ -4,6 +4,7 @@ format: html
 jupyter: python3
 number-sections: false
 execute:
+  eval: true
   echo: false
   warning: false
   cache: false
