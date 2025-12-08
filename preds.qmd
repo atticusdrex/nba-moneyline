@@ -5,10 +5,12 @@ jupyter: python3
 number-sections: false
 execute:
   eval: true
-  echo: false
   warning: false
+  echo: false
   cache: false
-  depends: ["moneyline/data/results.csv"]
+  freeze: false
+depends:
+  - moneyline/data/results.csv
 ---
 
 ```{python}
