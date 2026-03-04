@@ -1,10 +1,20 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "NBA Moneyline Tool",
+    "section": "",
+    "text": "About\nGreetings, degenerates. In my free time, I adapted a project I worked on last year to display on a public website. This is a machine learning pipeline which predicts regular season NBA games. It then scrapes all the upcoming games and makes an assessment of the profitability of the bet with the odds scraped each day. This is only trained on team stats and is not aware of individual injuries/extenuating circumstances. I make no claims on the accuracy or profitability of this algorithm and this is for educational purposes only. To learn how to read the predictions, go to the Predictions tab. This site updates each day at 5/6pm depending on daylight savings time (UTC -21:00).",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
     "objectID": "preds.html",
     "href": "preds.html",
     "title": "Today’s Predictions",
     "section": "",
-    "text": "Last Updated: \n2026-01-23 21:30:05.109026\n\n\n\n\n\n\n\n\n\nHome Team\nAway Team\nHome Odds\nAway Odds\nHome Prob\nAway Prob\nAvg. Home Profit\nAvg. Away Profit\nHome Std\nAway Std\n\n\n\n\n0\nDET\nHOU\n-180\n150\n0.621989\n0.378863\n-11.023977\n6.528275\n75.427404\n121.275964\n\n\n1\nATL\nPHX\n130\n-155\n0.459190\n0.540309\n-5.886315\n-27.448138\n114.616304\n81.990314\n\n\n2\nBKN\nBOS\n270\n-340\n0.228287\n0.773337\n-34.033808\n-60.896668\n155.299561\n54.181142\n\n\n3\nCLE\nSAC\n-575\n425\n0.842569\n0.156356\n-6.959314\n24.458353\n42.754715\n190.676271\n\n\n4\nOKC\nIND\n-1000\n650\n0.900729\n0.091593\n-6.419857\n12.108104\n32.892872\n216.337583\n\n\n5\nMEM\nNOP\n-225\n185\n0.732502\n0.269524\n-1.416321\n8.862138\n63.938923\n126.458040\n\n\n6\nMIL\nDEN\n-278\n225\n0.365668\n0.635426\n-57.078199\n63.287722\n65.486060\n156.425895\n\n\n7\nPOR\nTOR\n130\n-155\n0.499544\n0.499725\n3.395064\n-26.031105\n114.999952\n82.258052",
+    "text": "Last Updated: \n2026-03-04 21:44:42.043483\n\n\n\n\n\n\n\n\n\nHome Team\nAway Team\nHome Odds\nAway Odds\nHome Prob\nAway Prob\nAvg. Home Profit\nAvg. Away Profit\nHome Std\nAway Std\n\n\n\n\n0\nNYK\nOKC\n145\n-175\n0.495827\n0.501122\n9.227705\n-29.638878\n122.495734\n78.571231\n\n\n1\nBOS\nCHA\n-250\n205\n0.695150\n0.307894\n-9.678942\n17.383256\n64.448117\n140.794813\n\n\n2\nPHI\nUTA\n-375\n295\n0.778757\n0.224744\n-7.690727\n24.425287\n52.577242\n164.878439\n\n\n3\nMEM\nPOR\n330\n-425\n0.571802\n0.426533\n124.374879\n-38.960190\n212.771572\n61.094335\n\n\n4\nMIL\nATL\n-115\n-105\n0.477790\n0.519280\n-20.021874\n-12.527708\n93.385992\n97.546450\n\n\n5\nLAC\nIND\n-700\n500\n0.826380\n0.174894\n-11.270821\n40.084965\n43.289384\n227.925779\n\n\n6\nSAS\nDET\n-156\n132\n0.568730\n0.429501\n-14.875118\n1.967136\n81.272401\n114.841154\n\n\n7\nMIN\nTOR\n-255\n210\n0.644769\n0.356496\n-17.198765\n23.841185\n66.626279\n148.478905",
     "crumbs": [
       "Predictions"
     ]
@@ -37,16 +47,6 @@
     "text": "Model Calibration\nThe overall model’s predictions are a weighted average of the individual predictions of logistic regression, neural network, K-Nearest Neighbors, and Gradient Boosting models. These models all output probabilistic estimates of how likely a given team is to win its particular game against a particular opponent. These probabilities are not 100% accurate. The following plot shows how the probabilities may not be 1:1 with how likely a team actually is to win.\n\n\n\nThese probabilities are calibrated using a polynomial approximation which gives more accurate estimates. The following plot shows an example of how the raw probabilities (green) are corrected (red) to better explain the data.",
     "crumbs": [
       "Predictions"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "NBA Moneyline Tool",
-    "section": "",
-    "text": "About\nGreetings, degenerates. In my free time, I adapted a project I worked on last year to display on a public website. This is a machine learning pipeline which predicts regular season NBA games. It then scrapes all the upcoming games and makes an assessment of the profitability of the bet with the odds scraped each day. This is only trained on team stats and is not aware of individual injuries/extenuating circumstances. I make no claims on the accuracy or profitability of this algorithm and this is for educational purposes only. To learn how to read the predictions, go to the Predictions tab. This site updates each day at 5/6pm depending on daylight savings time (UTC -21:00).",
-    "crumbs": [
-      "Home"
     ]
   }
 ]
